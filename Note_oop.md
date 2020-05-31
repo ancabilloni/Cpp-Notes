@@ -1,7 +1,27 @@
 ## OOP
 
+---
+### Outline
+I. Intro
+  1. [Structure](#structure)
+  2. [Classes](#classes)
+  3. [Encapsulation vs. Abstraction](#encapabstract)
+  4. [Scope Resolution](#scope)
+  5. [Initializer Lists](#initlist)
+  6. [Accessor Functions](#accessor)
+  7. [Mutator Function](#mutator)
+  8. [Exception Sample](#exception)
+  9. [STATIC in Class](#staticclass)
+
+II. Advance
+  1. [Inheritance](#inheritance)
+  2. [Composition](#composition)
+  3. [Polymorphism](#polymorphism)
+  4. [Template](#template)
+---
+
 ### I. Intro
-#### 1. Structure
+#### <a name="structure"></a>1. Structure
 - **Structures** allow developers to create their own types ("user-defined" types) to aggregate data relevant to their needs.
 ```cpp
 struct Rectangle {
@@ -38,7 +58,7 @@ struct Date {
 };
 ```
 
-#### 2. Classes
+#### <a name="classes"></a>2. Classes
 - Classes are like structures, provide a way for C++ programmers to aggregate data together in a way that makes sense in the context of a specific program. 
 - By convention, programmers use structures when member variables are independent of each other, and use classes when member variables are related by an "invariant". An "invariant" is a rule that limits the values of member variables. 
 - Classes members default to private (different with struct)
@@ -46,11 +66,11 @@ struct Date {
 - Constructor: member function of a class or struct that initialize an object. 
 - A protected member variable or function is very similar to a private member but it provided one additional benefit that they can be accessed in child classes which are called derived classes.
 
-#### 3. Encapsulation vs Abstraction
+#### <a name="encapabstract"></a>3. Encapsulation vs Abstraction
 - Encapsulation: the grouping together of data and logic into a single unit. 
 - Abstraction: refers to the separation of a class's interface from the details of its implementation. The interface provides a way to interact with an object, while hiding the details and implementation of how the class works.
 
-#### 4. Scope Resolution
+#### <a name="scope"></a>4. Scope Resolution
 - C++ allows different identifiers (variable and function names) to have the same name, as long as they have different scope. For ex, two different functions can each declare the variable `int i`, because each variable only exists within the scope of its parent function.
 
 - In some cases, scopes can overlap, in which case the compiler may need assistance in determining which identifier the programmer means to use. The process of determining which identifier to use is called "scope resolution".
@@ -96,7 +116,7 @@ int main() {
 }
 ```
 
-#### 5. Initializer Lists
+#### <a name="initlist"></a>5. Initializer Lists
 - Initialize member variables to specific values, just before the class constructor runs.
 - In fact, initialization lists ensure that member variables are initialized before the object is created. This is why class member variables can be declared const, but only if the member variable is initialized through an initialization list. Trying to initialize a const class member within the body of the constructor will not work. 
 ```cpp
@@ -110,12 +130,12 @@ Date::Date(int day, int month, int year) : year_(y) {
   -  If you have a const class attribute, you can only initialize it using an initialization list. Otherwise, you would violate the const keyword simply by initializing the member in the constructor! 
   - Attributes defined as references must use initialization lists.
 
-#### 5. Accessor Functions
+#### <a name="accessor"></a>6. Accessor Functions
 - Public member functions that allow users to access object's data.
 - `const` accessors should only retrieve data. They should not change the data stored in the object.
 - The main role of `const` specifier in accessor methods is to protect member data. When you specify a member function as const, the compiler will prohibit that function from changing any of the object's member data.
 
-#### 6. Mutator Functions
+#### <a name="mutator"></a>7. Mutator Functions
 - "setter" function can apply logic ("invariants") when updating member data.
 - Setter & Getter String
 ```cpp
@@ -161,7 +181,7 @@ int main() {
 }
 ```
 
-#### 7. Exception Sample
+#### <a name="exception"></a>8. Exception Sample
 ```cpp
 #include <cassert>
 #include <stdexcept>
@@ -221,7 +241,7 @@ int main()
     }
 }
 ```
-#### 8. STATIC in Class
+#### <a name="staticclass"></a>9. STATIC in Class
 - Class members can be declared static, which means that the member belongs to the entire class, instead of to a specific instance of the class. More specifically, a static member is created only once and then shared by all instances (i.e. objects) of the class. That means that if the static member gets changed, either by a user of the class or within a member function of the class itself, then all members of the class will see that change the next time they access the static member.
 - static members are declared within their class (often in a header file) but in most cases they must be defined within the global scope. That's because memory is allocated for static variables immediately when the program begins, at the same time any global variables are initialized.
 
@@ -252,7 +272,7 @@ int main()
 
 ### II. Advanced
 
-#### 1. Inheritance
+#### <a name="inheritance"></a>1. Inheritance
 - Base class: parent. Derive class: child
 - **Public inheritance**: the public and protected members of the base class listed after the specifier keep their member access in the derived class
 **Protected inheritance**: the public and protected members of the base class listed after the specifier are protected members of the derived class
@@ -293,7 +313,7 @@ int main()
   }
   ```
 
-#### 2. Composition
+#### <a name="composition"></a>2. Composition
 - Composition is a closely related alternative to inheritance. Composition involves constructing ("composing") classes from other classes, instead of inheriting traits from a parent class.
 - A common way to distinguish "composition" from "inheritance" is to think about what an object can do, rather than what it is. This is often expressed as "has a" versus "is a".
 - From the standpoint of composition, a cat "has a" head and "has a" set of paws and "has a" tail. From the standpoint of inheritance, a cat "is a" mammal.
@@ -341,7 +361,7 @@ int main()
   }
   ```
 
-#### 3. Polymorphism
+#### <a name="polymorphism"></a>3. Polymorphism
 - "Assumeing many forms". Describes a paradignm in which a function may behave differently depending on how it is called. The function will perform differently based on its inputs.
 - **Overloading**: many functions with the same name. 
   ```cpp
@@ -400,3 +420,120 @@ int main()
     assert(p3.y == p1.y + p2.y);
   }
   ```
+- **Virtual Functions**: polymorphic feature, declared (possibly defined) in a base class, and can be overriden by derived class.
+  - Declares **interface** at the base level, but delegates the implementation of the interface to the derived class.
+  - **Pure virtual function** is a virtual function that the base class declares but does not define. Side effect: making its class abstract means the class cannot be instantiated. Instead, only classes that derive from the abstract class and override the pure virtual function can be instantiated.
+
+    ```cpp
+    class Shape {
+      public:
+          Shape() {}
+          virtual double Area() const = 0;
+          virtual double Perimeter() const = 0;
+    };
+    ```
+  - Virtual functions can be defined by derived classes, but this is not required. However, if we mark the virtual function with = 0 in the base class, then we are declaring the function to be a pure virtual function. This means that the base class does not define this function. A derived class must define this function, or else the derived class will be abstract.
+
+    ```cpp
+    // Example solution for Shape inheritance
+    #include <assert.h>
+    #include <cmath>
+
+    // TODO: Define pi
+    #define PI 3.14159;
+
+    // TODO: Define the abstract class Shape
+    class Shape {
+    public:
+      // Define public virtual functions Area() and Perimeter()
+      // Append the declarations with = 0 to specify pure virtual functions
+      virtual double Area() const = 0;
+      virtual double Perimeter() const = 0;
+    };
+
+    // TODO: Define Rectangle to inherit publicly from Shape
+    class Rectangle : public Shape {
+    public:
+      // TODO: Declare public constructor
+      Rectangle(double w, double h) {
+        Rectangle::width_ = w;
+        Rectangle::height_ = h;
+      }
+      // TODO: Override virtual base class functions Area() and Perimeter()
+      double Area() const override { return width_ * height_; }
+      double Perimeter() const override { return 2 * (width_ + height_); }
+
+    private:
+      // TODO: Declare private attributes width and height
+      double width_;
+      double height_;
+    };
+
+    // TODO: Define Circle to inherit from Shape
+    class Circle : public Shape {
+    public:
+      // TODO: Declare public constructor
+      Circle(double r) { radius_ = r; }
+      // TODO: Override virtual base class functions Area() and Perimeter()
+      double Area() const override { return pow(radius_, 2) * PI; }
+      double Perimeter() const override { return 2 * radius_ * PI; }
+
+    private:
+      // TODO: Declare private member variable radius
+      double radius_;
+    };
+
+    // Test in main()
+    int main() {
+      double epsilon = 0.1; // useful for floating point equality
+
+      // Test circle
+      Circle circle(12.31);
+      assert(abs(circle.Perimeter() - 77.35) < epsilon);
+      assert(abs(circle.Area() - 476.06) < epsilon);
+
+      // Test rectangle
+      Rectangle rectangle(10, 6);
+      assert(rectangle.Perimeter() == 32);
+      assert(rectangle.Area() == 60);
+    }
+    ```
+- **Overriding**: occurs when base class declares virtual function, and derive class overrides that virtual function by defining its own implementation with an identical function signature.
+- **Function hiding**: if drived class has the same function as base class (no virtual), the derived class calls its own function instead of base class. This is the derived class hiding the base class.  
+#### <a name="template"></a>4. Template
+- Enable generic programming by generalizing a function to apply to any class. 
+  ```cpp
+  template <typename Type> Type Sum(Type a, Type b) { return a + b; }
+
+  int main() { std::cout << Sum<double>(20.0, 13.7) << "\n"; }
+  ```
+- Use the keyword template to specify which function is generic. Generic code is the term for code that is independent of types. It is mandatory to put the template<> tag before the function signature, to specify and mark that the declaration is generic. 
+- Besides template, the keyword typename (or, alternatively, class) specifies the generic type in the function prototype. The parameters that follow typename (or class) represent generic types in the function declaration.
+- **Deduction**: from c++17, template does not need to specify type when calling the function.
+- **Class template**
+  ```cpp
+  #include <assert.h>
+  #include <string>
+  #include <sstream>
+
+  // TODO: Add the correct template specification
+  template <typename KeyType, typename ValueType>
+  class Mapping {
+  public:
+    Mapping(KeyType key, ValueType value) : key(key), value(value) {}
+    std::string Print() const {
+      std::ostringstream stream;
+      stream << key << ": " << value;
+      return stream.str();
+    }
+    KeyType key;
+    ValueType value;
+  };
+
+  // Test
+  int main() {
+    Mapping<std::string, int> mapping("age", 20);
+    assert(mapping.Print() == "age: 20");
+  }
+  ```
+  
